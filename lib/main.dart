@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'list_data.dart';
 
 void main() => runApp(MyApp());
 
@@ -46,21 +47,23 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   bool _checked = false;
+  ToDoDataList _list = new ToDoDataList();
 
-  void _incrementCounter() {
+  void addTask() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      int count = _list.count() + 1;
+      _list.add(new ToDoData('Probando: $count'));
     });
   }
 
-  _updateCheckBox(value) {
+  void removeTask(int index) {
+    _list.remove(index);
+    setState(() => {});
+  }
+
+  _updateCheckBox(bool value, int index) {
     setState(() {
-      _checked = value;
+      _list.setChecked(index, value);
     });
   }
 
@@ -82,15 +85,26 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: ListView.builder(itemBuilder: (context, index) => ListTile(
-            title: Text('Item: $index'),
-            leading: Checkbox(value: _checked,
-              onChanged: (val) => this._updateCheckBox(val)
+            title: Text(_list.items()[index].name()),
+            leading: Checkbox(value: _list.isChecked(index),
+              onChanged: (val) => this._updateCheckBox(val, index)
             ),
-          )
+            trailing: ClipOval(
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  splashColor: Colors.white,
+                  child: SizedBox(height: 45, width: 45, child: Icon(Icons.delete)),
+                  onTap: (){ removeTask(index); },
+                ),
+              ),
+            )
+          ),
+          itemCount: _list.count(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: addTask,
         tooltip: 'Add New Task',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

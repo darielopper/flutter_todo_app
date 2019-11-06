@@ -16,15 +16,27 @@ class ToDoData {
     return this;
   }
 
-  String Name() => this._name;
+  String name() => this._name;
 
-  bool Checked() => this._checked;
+  bool checked() => this._checked;
 }
 
-class TodoDataList {
+class ToDoDataList {
   List<ToDoData> _list;
 
-  TodoDataList() {
+  ToDoDataList() {
     _list = new List<ToDoData>();
   }
+
+  add(ToDoData item) => _list.add(item);
+
+  List<ToDoData> items() => this._list;
+
+  setChecked(int index, bool value) => _list.elementAt(index).setChecked(value);
+
+  isChecked(int index) => _list.elementAt(index).checked();
+
+  remove(int index) => _list.removeAt(index);
+
+  count() => _list.length;
 }
