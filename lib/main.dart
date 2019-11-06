@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -45,6 +45,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  bool _checked = false;
 
   void _incrementCounter() {
     setState(() {
@@ -54,6 +55,12 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+    });
+  }
+
+  _updateCheckBox(value) {
+    setState(() {
+      _checked = value;
     });
   }
 
@@ -76,7 +83,9 @@ class _MyHomePageState extends State<MyHomePage> {
         // in the middle of the parent.
         child: ListView.builder(itemBuilder: (context, index) => ListTile(
             title: Text('Item: $index'),
-            leading: Icon(Icons.check_box_outline_blank),
+            leading: Checkbox(value: _checked,
+              onChanged: (val) => this._updateCheckBox(val)
+            ),
           )
         ),
       ),
