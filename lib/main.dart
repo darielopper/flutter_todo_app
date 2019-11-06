@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'list_data.dart';
 
 void main() => runApp(MyApp());
@@ -47,13 +48,30 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   bool _checked = false;
+  TextEditingController _controller = new TextEditingController();
   ToDoDataList _list = new ToDoDataList();
 
   void addTask() {
     setState(() {
       int count = _list.count() + 1;
-      _list.add(new ToDoData('Probando: $count'));
+      _list.add(new ToDoData('Task: $count'));
     });
+  }
+
+  _showDialog(BuildContext context) async {
+    return await showDialog(context: context, builder: (context) => AlertDialog(
+      title: Text('Add a new Task'),
+      content: TextField(
+        controller: _controller,
+        decoration: InputDecoration(hintText: 'eg New Task')
+      ),
+      actions: <Widget>[
+        new FlatButton(
+          child: Text('OK'),
+          onPressed: () => Navigator.of(context).pop()
+        )
+      ],
+    ));
   }
 
   void removeTask(int index) {
