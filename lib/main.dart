@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'list_data.dart';
 
 void main() => runApp(MyApp());
@@ -11,17 +10,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.teal
-      ),
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.teal),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -46,32 +44,46 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  bool _checked = false;
-  TextEditingController _controller = new TextEditingController();
   ToDoDataList _list = new ToDoDataList();
 
   void addTask() {
-    setState(() {
-      int count = _list.count() + 1;
-      _list.add(new ToDoData('Task: $count'));
+    this._neverSatisfied().then((value) {
+      setState(() {
+        _list.add(new ToDoData(value));
+      });
     });
   }
 
-  _showDialog(BuildContext context) async {
-    return await showDialog(context: context, builder: (context) => AlertDialog(
-      title: Text('Add a new Task'),
-      content: TextField(
-        controller: _controller,
-        decoration: InputDecoration(hintText: 'eg New Task')
-      ),
-      actions: <Widget>[
-        new FlatButton(
-          child: Text('OK'),
-          onPressed: () => Navigator.of(context).pop()
-        )
-      ],
-    ));
+  Future<String> _neverSatisfied() async {
+    TextEditingController _controller = TextEditingController();
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Add New Task'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(hintText: 'Description'),
+                  autofocus: true,
+                  onSubmitted: (val) => Navigator.of(context).pop(val),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop(_controller.text);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void removeTask(int index) {
@@ -102,28 +114,31 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: ListView.builder(itemBuilder: (context, index) => ListTile(
-            title: Text(_list.items()[index].name()),
-            leading: Checkbox(value: _list.isChecked(index),
-              onChanged: (val) => this._updateCheckBox(val, index)
-            ),
-            trailing: ClipOval(
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  splashColor: Colors.white,
-                  child: SizedBox(height: 45, width: 45, child: Icon(Icons.delete)),
-                  onTap: (){ removeTask(index); },
+        child: ListView.builder(
+          itemBuilder: (context, index) => ListTile(
+              title: Text(_list.items()[index].name()),
+              leading: Checkbox(
+                  value: _list.isChecked(index),
+                  onChanged: (val) => this._updateCheckBox(val, index)),
+              trailing: ClipOval(
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    splashColor: Colors.white,
+                    child: SizedBox(
+                        height: 45, width: 45, child: Icon(Icons.delete)),
+                    onTap: () {
+                      removeTask(index);
+                    },
+                  ),
                 ),
-              ),
-            )
-          ),
+              )),
           itemCount: _list.count(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: addTask,
-        tooltip: 'Add New Task',
+        tooltip: 'Add New',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
