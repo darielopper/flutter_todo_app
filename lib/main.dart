@@ -120,55 +120,62 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 4.0,
-        child: new Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Padding(padding: EdgeInsets.only(left: 5), child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Text('Done: ', style: TextStyle(fontWeight: FontWeight.bold),),
-                Text('$dones '),
-                Text('of ', style: TextStyle(fontWeight: FontWeight.bold)),
-                Text('$totals'),
-                Text(' ('),
-                Text('$percent%', style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(')')
-              ],)),
-            IconButton(
-              icon: Icon(Icons.clear_all),
-              onPressed: () {},
-              tooltip: 'Remove All',
-            ),
-          ],
-        )
-      ),
-      body: Container(
-          //height: MediaQuery.of(context).size.height * 0.65,
-          //color: Colors.brown,
-          child: ListView.builder(
-              itemBuilder: (context, index) => ListTile(
-                  title: Text(_list.items()[index].name()),
-                  leading: Checkbox(
-                      value: _list.isChecked(index),
-                      onChanged: (val) => this._updateCheckBox(val, index)),
-                  trailing: ClipOval(
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        splashColor: Colors.white,
-                        child: SizedBox(
-                            height: 45, width: 45, child: Icon(Icons.delete)),
-                        onTap: () {
-                          removeTask(index);
-                        },
+          shape: CircularNotchedRectangle(),
+          notchMargin: 4.0,
+          child: new Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                  padding: EdgeInsets.only(left: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Done: ',
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    ),
+                      Text('$dones '),
+                      Text('of ',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text('$totals'),
+                      Text(' ('),
+                      Text('$percent%',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text(')')
+                    ],
                   )),
-              itemCount: _list.count(),
-            ),
+              IconButton(
+                icon: Icon(Icons.clear_all),
+                onPressed: () {},
+                tooltip: 'Remove All',
+              ),
+            ],
+          )),
+      body: Container(
+        //height: MediaQuery.of(context).size.height * 0.65,
+        //color: Colors.brown,
+        child: ListView.builder(
+          itemBuilder: (context, index) => ListTile(
+              title: Text(_list.items()[index].name()),
+              leading: Checkbox(
+                  value: _list.isChecked(index),
+                  onChanged: (val) => this._updateCheckBox(val, index)),
+              trailing: ClipOval(
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    splashColor: Colors.white,
+                    child: SizedBox(
+                        height: 45, width: 45, child: Icon(Icons.delete)),
+                    onTap: () {
+                      removeTask(index);
+                    },
+                  ),
+                ),
+              )),
+          itemCount: _list.count(),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: addTask,

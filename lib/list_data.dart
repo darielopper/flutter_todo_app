@@ -45,7 +45,7 @@ class ToDoDataList {
   dones() => _list.where((item) => item.checked()).length;
 
   percent() {
-    num result = (this.dones() / _list.length * 100);
+    num result = _list.length > 0 ? (this.dones() / _list.length * 100) : 0;
     return result.toStringAsFixed(0);
   }
 }
