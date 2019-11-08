@@ -8,7 +8,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Simple ToDo',
+      debugShowCheckedModeBanner: false, // Not show debug banner
       theme: ThemeData(
           // This is the theme of your application.
           //
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
           primarySwatch: Colors.teal),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Simple ToDo'),
     );
   }
 }
@@ -97,6 +98,12 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  get totals => _list.count();
+
+  get dones => _list.dones();
+
+  get percent => _list.percent();
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -111,30 +118,57 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: ListView.builder(
-          itemBuilder: (context, index) => ListTile(
-              title: Text(_list.items()[index].name()),
-              leading: Checkbox(
-                  value: _list.isChecked(index),
-                  onChanged: (val) => this._updateCheckBox(val, index)),
-              trailing: ClipOval(
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    splashColor: Colors.white,
-                    child: SizedBox(
-                        height: 45, width: 45, child: Icon(Icons.delete)),
-                    onTap: () {
-                      removeTask(index);
-                    },
-                  ),
-                ),
-              )),
-          itemCount: _list.count(),
-        ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 4.0,
+        child: new Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(padding: EdgeInsets.only(left: 5), child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Text('Done: ', style: TextStyle(fontWeight: FontWeight.bold),),
+                Text('$dones '),
+                Text('of ', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('$totals'),
+                Text(' ('),
+                Text('$percent%', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(')')
+              ],)),
+            IconButton(
+              icon: Icon(Icons.clear_all),
+              onPressed: () {},
+              tooltip: 'Remove All',
+            ),
+          ],
+        )
+      ),
+      body: Container(
+          //height: MediaQuery.of(context).size.height * 0.65,
+          //color: Colors.brown,
+          child: ListView.builder(
+              itemBuilder: (context, index) => ListTile(
+                  title: Text(_list.items()[index].name()),
+                  leading: Checkbox(
+                      value: _list.isChecked(index),
+                      onChanged: (val) => this._updateCheckBox(val, index)),
+                  trailing: ClipOval(
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        splashColor: Colors.white,
+                        child: SizedBox(
+                            height: 45, width: 45, child: Icon(Icons.delete)),
+                        onTap: () {
+                          removeTask(index);
+                        },
+                      ),
+                    ),
+                  )),
+              itemCount: _list.count(),
+            ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: addTask,

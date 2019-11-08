@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class ToDoData {
   String _name;
   bool _checked;
@@ -39,4 +41,11 @@ class ToDoDataList {
   remove(int index) => _list.removeAt(index);
 
   count() => _list.length;
+
+  dones() => _list.where((item) => item.checked()).length;
+
+  percent() {
+    num result = (this.dones() / _list.length * 100);
+    return result.toStringAsFixed(0);
+  }
 }
