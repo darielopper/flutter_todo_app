@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
   get filterResults {
     return _criteria.length == 0
       ? _list.items()
-      : _list.items().where((item) => item.name.toLowerCase().indexOf(_criteria) >= 0).toList();
+      : _list.items().where((item) => item.name.toLowerCase().indexOf(_criteria.toLowerCase()) >= 0).toList();
   }
 
   void search(String filter) {
