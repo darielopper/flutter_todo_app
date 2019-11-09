@@ -42,6 +42,8 @@ class ToDoDataList {
 
   toggleChecked(int index) => _list.elementAt(index).setChecked(!_list.elementAt(index).checked());
 
+  clear() => _list.clear();
+
   get dones => _list.where((item) => item.checked()).length;
 
   get count => _list.length;

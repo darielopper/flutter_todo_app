@@ -59,14 +59,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Future<bool> _confirmDialog() async {
+  Future<bool> _confirmDialog({String message = 'Are you sure do you want remove this Task?'}) async {
       return showDialog<bool>(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Delete Task'),
             content: SingleChildScrollView(
-              child: Text('Are you sure do you want remove this Task?')
+              child: Text(message)
             ),
             actions: <Widget>[
               FlatButton(
@@ -129,6 +129,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  removeAll() {
+    _confirmDialog(message: 'Are you sure you want to remove all Tasks?')
+      .then((val) => val ? setState(() { _list.clear(); }) : null);
+  }
+
   _updateCheckBox(bool value, int index) {
     setState(() {
       _list.setChecked(index, value);
@@ -166,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: BolderMarkupText(text: '*Done:* ${_list.dones} of ${_list.count} (*${_list.percent}%*)')),
               IconButton(
                 icon: Icon(Icons.clear_all),
-                onPressed: () {},
+                onPressed: removeAll,
                 tooltip: 'Remove All',
               ),
             ],
