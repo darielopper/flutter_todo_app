@@ -50,6 +50,11 @@ class ToDoDataList {
 
   toggleChecked(int index) => _list.elementAt(index).setChecked(!_list.elementAt(index).checked);
 
+  toggleCheckedByKey(Key key) {
+    ToDoData actual = _list.singleWhere((item) => item.key.hashCode == key.hashCode);
+    actual.setChecked(!actual.checked);
+  }
+
   clear() => _list.clear();
 
   get dones => _list.where((item) => item.checked).length;
