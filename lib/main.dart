@@ -146,6 +146,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  get notMatchFound => this._criteria.length > 0 && this._searching && filterResults.length == 0;
+  get showList => filterResults.length > 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -194,33 +197,55 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
           )),
-      body: Container(
-        //height: MediaQuery.of(context).size.height * 0.65,
-        child: ListView.builder(
-          itemBuilder: (context, index) => ListTile(
-              title: Text(filterResults[index].name),
-              leading: Checkbox(
-                  value: _list.isCheckedByKey(filterResults[index].key),
-                  onChanged: (val) => this._updateCheckBox(val, index)),
-              trailing: ClipOval(
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    splashColor: Colors.white,
-                    child: SizedBox(
-                        height: 45, width: 45, child: Icon(Icons.delete)),
-                    onTap: () {
-                      removeTask(index);
-                    },
-                  ),
-                ),
-              ),
-              onTap: () => setState((){
-                _list.toggleCheckedByKey(filterResults[index].key);
-              }),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Visibility(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(top: 25),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Icon(Icons.info, color: Colors.orangeAccent, size: 40),
+                      Text('Sorry, not match found!', style: TextStyle(fontSize: 16),)
+                    ],
+                  )
+                )
+              ]
             ),
-          itemCount: filterResults.length,
-        ),
+            visible: notMatchFound
+          ),
+          Visibility(child: Expanded(
+            child: ListView.builder(
+                  itemBuilder: (context, index) => ListTile(
+                      title: Text(filterResults[index].name),
+                      leading: Checkbox(
+                          value: _list.isCheckedByKey(filterResults[index].key),
+                          onChanged: (val) => this._updateCheckBox(val, index)),
+                      trailing: ClipOval(
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            splashColor: Colors.white,
+                            child: SizedBox(
+                                height: 45, width: 45, child: Icon(Icons.delete)),
+                            onTap: () {
+                              removeTask(index);
+                            },
+                          ),
+                        ),
+                      ),
+                      onTap: () => setState((){
+                        _list.toggleCheckedByKey(filterResults[index].key);
+                      }),
+                    ),
+                  itemCount: filterResults.length,
+                ),
+          ), visible: showList)
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: addTask,
