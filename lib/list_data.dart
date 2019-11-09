@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
+
 class ToDoData {
   String _name;
   bool _checked;
+  Key _key;
 
   ToDoData(this._name) {
     this._checked = false;
+    this._key = UniqueKey();
   }
 
   ToDoData setName(String name) {
@@ -19,6 +23,8 @@ class ToDoData {
   get name => this._name;
 
   get checked => this._checked;
+
+  get key => this._key;
 }
 
 class ToDoDataList {
@@ -37,6 +43,8 @@ class ToDoDataList {
   isChecked(int index) => _list.elementAt(index).checked;
 
   removeAt(int index) => _list.removeAt(index);
+
+  remove(Key key) => _list.removeWhere((item) => item.key.hashCode == key.hashCode);
 
   toggleChecked(int index) => _list.elementAt(index).setChecked(!_list.elementAt(index).checked);
 

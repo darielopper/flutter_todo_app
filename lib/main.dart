@@ -138,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _confirmDialog().then((val) {
       if (val) {
         setState(() {
-          _list.removeAt(index);
+          _list.remove(filterResults[index].key);
         });
       }
     });
