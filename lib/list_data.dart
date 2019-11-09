@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ToDoData {
   String _name;
   bool _checked;
   Key _key;
+  int _created_at;
 
   ToDoData(this._name) {
     this._checked = false;
     this._key = UniqueKey();
+    this._created_at = DateTime.now().millisecondsSinceEpoch;
   }
 
   ToDoData setName(String name) {
@@ -25,6 +28,8 @@ class ToDoData {
   get checked => this._checked;
 
   get key => this._key;
+
+  get created_at => this._created_at;
 }
 
 class ToDoDataList {

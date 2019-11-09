@@ -51,9 +51,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  static const SORT_ASCENDING = 'asc';
+  static const SORT_DESCENDING = 'desc';
+  static const NOT_SORT = 'none';
+
   ToDoDataList _list = new ToDoDataList();
   bool _searching = false;
+  String sortMode = NOT_SORT;
+  IconData sortIcon = Icons.sort;
   String _criteria = "";
+
 
   void addTask() {
     this._showAddDialog().then((value) {
@@ -76,10 +83,46 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  get isSorting => sortMode != NOT_SORT;
+  get sortAsc => sortMode == SORT_ASCENDING;
+  get sortDesc => sortMode == SORT_DESCENDING;
+  get sortModes => [SORT_ASCENDING, SORT_DESCENDING, NOT_SORT];
+  get sortIcons => [Icons.arrow_upward, Icons.arrow_downward, Icons.sort];
+
+  nextMode() {
+    int actualIndex = sortModes.indexOf(this.sortMode);
+    if(actualIndex++ < sortModes.length - 1) {
+       setState(() {
+         this.sortMode = sortModes[actualIndex];
+         this.sortIcon = sortIcons[actualIndex];
+       });
+    } else {
+      setState(() {
+        this.sortMode = sortModes[0];
+        this.sortIcon = sortIcons[0];
+      });
+    }
+  }
+
+
   get filterResults {
-    return _criteria.length == 0
+    List<ToDoData> result = _criteria.length == 0
       ? _list.items()
       : _list.items().where((item) => item.name.toLowerCase().indexOf(_criteria.toLowerCase()) >= 0).toList();
+
+    switch(sortMode) {
+      case SORT_ASCENDING:
+        result.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+        break;
+      case SORT_DESCENDING:
+        result.sort((a, b) => b.name.toLowerCase().compareTo(a.name.toLowerCase()));
+        break;
+      default:
+        result.sort((a, b) => a.created_at.compareTo(b.created_at));
+        break;
+    }
+
+    return result;
   }
 
   void search(String filter) {
@@ -150,7 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
       title: 'Clear All',
       message: 'Are you sure you want to remove all Tasks?',
       context: context
-    ).then((val) => val ? setState(() { _list.clear(); }) : null);
+    ).then((val) => val ? setState(() { _list.clear(); }) : false);
   }
 
   _updateCheckBox(bool value, int index) {
@@ -188,6 +231,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         actions: <Widget>[
+          IconButton(icon: Icon(sortIcon), onPressed: nextMode),
           Visibility(child: IconButton(icon: Icon(Icons.search), onPressed: activeSearch, tooltip: 'Search',), visible: !_searching),
           Visibility(child: IconButton(icon: Icon(Icons.clear), onPressed: deactiveSearch, tooltip: 'Cancel Search',), visible: _searching),
         ],
