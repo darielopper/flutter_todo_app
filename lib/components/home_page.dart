@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
         result.sort((a, b) => b.name.toLowerCase().compareTo(a.name.toLowerCase()));
         break;
       default:
-        result.sort((a, b) => a.created_at.compareTo(b.created_at));
+        result.sort((a, b) => a.createdAt.compareTo(b.createdAt));
         break;
     }
 

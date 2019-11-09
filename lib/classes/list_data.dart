@@ -5,12 +5,12 @@ class ToDoData {
   String _name;
   bool _checked;
   Key _key;
-  int _created_at;
+  int _createdAt;
 
   ToDoData(this._name) {
     this._checked = false;
     this._key = UniqueKey();
-    this._created_at = DateTime.now().millisecondsSinceEpoch;
+    this._createdAt = DateTime.now().millisecondsSinceEpoch;
   }
 
   ToDoData setName(String name) {
@@ -29,7 +29,7 @@ class ToDoData {
 
   get key => this._key;
 
-  get created_at => this._created_at;
+  get createdAt => this._createdAt;
 }
 
 class ToDoDataList {
