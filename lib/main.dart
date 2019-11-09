@@ -57,6 +57,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void addTask() {
     this._showAddDialog().then((value) {
+      if(value == null) {
+        return;
+      }
       setState(() {
         _list.add(new ToDoData(value));
       });
@@ -77,8 +80,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   get headerActionIcon => Icon(this._searching ? Icons.search : Icons.clear);
 
-  Future<String> _showAddDialog() async {
-    TextEditingController _controller = TextEditingController();
+  Future<String> _showAddDialog({String text = ''}) async {
+    TextEditingController _controller = TextEditingController(text: text);
     return showDialog<String>(
       context: context,
       builder: (BuildContext context) {
@@ -100,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
             FlatButton(
               child: Text('Ok'),
               onPressed: () {
-                Navigator.of(context).pop(_controller.text);
+                Navigator.of(context).pop(_controller.text != null ? _controller.text : '');
               },
             ),
           ],
