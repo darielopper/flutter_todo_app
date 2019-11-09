@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:core' as prefix0;
 import 'dart:core';
 
@@ -50,6 +51,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   ToDoDataList _list = new ToDoDataList();
+  bool _searching = false;
+  String _criteria = "";
 
   void addTask() {
     this._showAddDialog().then((value) {
@@ -58,6 +61,20 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     });
   }
+
+  get filterResults {
+    return _criteria.length == 0
+      ? _list.items()
+      : _list.items().where((item) => item.name().toLowerCase().indexOf(_criteria) >= 0).toList();
+  }
+
+  void search(String filter) {
+    setState(() {
+      this._criteria = filter;
+    });
+  }
+
+  get headerActionIcon => Icon(this._searching ? Icons.search : Icons.clear);
 
   Future<bool> _confirmDialog({String message = 'Are you sure do you want remove this Task?'}) async {
       return showDialog<bool>(
@@ -118,14 +135,25 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void removeTask(int index) {
-    /*_list.remove(index);
-    setState(() => {});*/
     _confirmDialog().then((val) {
       if (val) {
         setState(() {
           _list.remove(index);
         });
       }
+    });
+  }
+
+  void activeSearch() {
+    setState(() {
+      this._searching = true;
+    });
+  }
+
+  void deactiveSearch() {
+    setState(() {
+      this._searching = false;
+      this._criteria = "";
     });
   }
 
@@ -142,6 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //HashMap<String, dynamic> headerWidgetsData = this.headerWidgets();
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -152,7 +181,31 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Visibility(child: Text(widget.title), visible: !_searching),
+            Visibility(
+              child: TextField(
+                cursorColor: Colors.white,
+                autofocus: true,
+                autocorrect: false,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Search text',
+                  hintStyle: TextStyle(color: Colors.white)
+                ),
+                onChanged: (val) => search(val),
+              ),
+              visible: _searching
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          Visibility(child: IconButton(icon: Icon(Icons.search), onPressed: activeSearch), visible: !_searching),
+          Visibility(child: IconButton(icon: Icon(Icons.clear), onPressed: deactiveSearch), visible: _searching),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
@@ -176,7 +229,7 @@ class _MyHomePageState extends State<MyHomePage> {
         //height: MediaQuery.of(context).size.height * 0.65,
         child: ListView.builder(
           itemBuilder: (context, index) => ListTile(
-              title: Text(_list.items()[index].name()),
+              title: Text(filterResults[index].name()),
               leading: Checkbox(
                   value: _list.isChecked(index),
                   onChanged: (val) => this._updateCheckBox(val, index)),
@@ -197,7 +250,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 _list.toggleChecked(index);
               }),
             ),
-          itemCount: _list.count,
+          itemCount: filterResults.length,
         ),
       ),
       floatingActionButton: FloatingActionButton(
