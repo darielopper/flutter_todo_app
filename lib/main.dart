@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_example/bolder_markup_text.dart';
 import 'list_data.dart';
 
 void main() => runApp(MyApp());
@@ -128,23 +129,8 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               Padding(
                   padding: EdgeInsets.only(left: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'Done: ',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text('$dones '),
-                      Text('of ',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text('$totals'),
-                      Text(' ('),
-                      Text('$percent%',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text(')')
-                    ],
-                  )),
+                  child: BolderMarkupText(text: '*Done:* $dones of $totals (*$percent%*)')
+              ),
               IconButton(
                 icon: Icon(Icons.clear_all),
                 onPressed: () {},
