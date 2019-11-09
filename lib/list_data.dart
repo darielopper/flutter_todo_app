@@ -40,12 +40,12 @@ class ToDoDataList {
 
   remove(int index) => _list.removeAt(index);
 
-  count() => _list.length;
+  get dones => _list.where((item) => item.checked()).length;
 
-  dones() => _list.where((item) => item.checked()).length;
+  get count => _list.length;
 
-  percent() {
-    num result = _list.length > 0 ? (this.dones() / _list.length * 100) : 0;
+  get percent {
+    num result = _list.length > 0 ? (this.dones / _list.length * 100) : 0;
     return result.toStringAsFixed(0);
   }
 }

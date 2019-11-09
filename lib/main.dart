@@ -99,8 +99,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  get totals => _list.count();
-
   get dones => _list.dones();
 
   get percent => _list.percent();
@@ -129,8 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               Padding(
                   padding: EdgeInsets.only(left: 5),
-                  child: BolderMarkupText(text: '*Done:* $dones of $totals (*$percent%*)')
-              ),
+                  child: BolderMarkupText(text: '*Done:* ${_list.dones} of ${_list.count} (*${_list.percent}%*)')),
               IconButton(
                 icon: Icon(Icons.clear_all),
                 onPressed: () {},
@@ -160,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               )),
-          itemCount: _list.count(),
+          itemCount: _list.count,
         ),
       ),
       floatingActionButton: FloatingActionButton(
