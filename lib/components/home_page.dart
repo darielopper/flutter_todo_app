@@ -33,7 +33,38 @@ class _MyHomePageState extends State<MyHomePage> {
   IconData sortIcon = Icons.sort;
   String _criteria = "";
 
+  /// Get Methods
+  get isSorting => sortMode != NOT_SORT;
+  get sortAsc => sortMode == SORT_ASCENDING;
+  get sortDesc => sortMode == SORT_DESCENDING;
+  get sortModes => [SORT_ASCENDING, SORT_DESCENDING, NOT_SORT];
+  get sortIcons => [Icons.arrow_upward, Icons.arrow_downward, Icons.sort];
+  get headerActionIcon => Icon(this._searching ? Icons.search : Icons.clear);
+  get notMatchFound => this._criteria.length > 0 && this._searching && filterResults.length == 0;
+  get showList => filterResults.length > 0;
 
+  get filterResults {
+    List<ToDoData> result = _criteria.length == 0
+      ? _list.items()
+      : _list.items().where((item) => item.name.toLowerCase().indexOf(_criteria.toLowerCase()) >= 0).toList();
+
+    switch(sortMode) {
+      case SORT_ASCENDING:
+        result.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+        break;
+      case SORT_DESCENDING:
+        result.sort((a, b) => b.name.toLowerCase().compareTo(a.name.toLowerCase()));
+        break;
+      default:
+        result.sort((a, b) => a.created_at.compareTo(b.created_at));
+        break;
+    }
+
+    return result;
+  }
+  /// End Get Methods
+
+  /// Methods
   void addTask() {
     this._showAddDialog().then((value) {
       if(value == null) return;
@@ -55,13 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  get isSorting => sortMode != NOT_SORT;
-  get sortAsc => sortMode == SORT_ASCENDING;
-  get sortDesc => sortMode == SORT_DESCENDING;
-  get sortModes => [SORT_ASCENDING, SORT_DESCENDING, NOT_SORT];
-  get sortIcons => [Icons.arrow_upward, Icons.arrow_downward, Icons.sort];
-
-  nextMode() {
+  void nextMode() {
     int actualIndex = sortModes.indexOf(this.sortMode);
     if(actualIndex++ < sortModes.length - 1) {
        setState(() {
@@ -76,35 +101,13 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-
-  get filterResults {
-    List<ToDoData> result = _criteria.length == 0
-      ? _list.items()
-      : _list.items().where((item) => item.name.toLowerCase().indexOf(_criteria.toLowerCase()) >= 0).toList();
-
-    switch(sortMode) {
-      case SORT_ASCENDING:
-        result.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
-        break;
-      case SORT_DESCENDING:
-        result.sort((a, b) => b.name.toLowerCase().compareTo(a.name.toLowerCase()));
-        break;
-      default:
-        result.sort((a, b) => a.created_at.compareTo(b.created_at));
-        break;
-    }
-
-    return result;
-  }
-
   void search(String filter) {
     setState(() {
       this._criteria = filter;
     });
   }
 
-  get headerActionIcon => Icon(this._searching ? Icons.search : Icons.clear);
-
+  /// Async Method
   Future<String> _showAddDialog({String text = '', String title = 'Add New Task'}) async {
     TextEditingController _controller = TextEditingController(text: text);
     return showDialog<String>(
@@ -160,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  removeAll() {
+  void removeAll() {
     Utils.confirmDialog(
       title: 'Clear All',
       message: 'Are you sure you want to remove all Tasks?',
@@ -168,14 +171,11 @@ class _MyHomePageState extends State<MyHomePage> {
     ).then((val) => val ? setState(() { _list.clear(); }) : false);
   }
 
-  _updateCheckBox(bool value, int index) {
+  void _updateCheckBox(bool value, int index) {
     setState(() {
       _list.setChecked(index, value);
     });
   }
-
-  get notMatchFound => this._criteria.length > 0 && this._searching && filterResults.length == 0;
-  get showList => filterResults.length > 0;
 
   @override
   Widget build(BuildContext context) {

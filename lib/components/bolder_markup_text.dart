@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_example/utils.dart';
+import 'package:todo_example/classes/utils.dart';
 
 class BolderMarkupText extends StatefulWidget
 {
