@@ -55,6 +55,11 @@ class ToDoDataList {
     actual.setChecked(!actual.checked);
   }
 
+  update(Key key, String value) {
+    ToDoData actual = _list.singleWhere((item) => item.key.hashCode == key.hashCode);
+    actual.setName(value);
+  }
+
   clear() => _list.clear();
 
   get dones => _list.where((item) => item.checked).length;

@@ -57,11 +57,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void addTask() {
     this._showAddDialog().then((value) {
-      if(value == null) {
-        return;
-      }
+      if(value == null) return;
       setState(() {
         _list.add(new ToDoData(value));
+      });
+    });
+  }
+
+  void update(int index) {
+    this._showAddDialog(
+      text: filterResults[index].name,
+      title: 'Edit Task'
+    ).then((value) {
+      if (value == null) return;
+      setState(() {
+        _list.update(filterResults[index].key, value);
       });
     });
   }
@@ -80,13 +90,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   get headerActionIcon => Icon(this._searching ? Icons.search : Icons.clear);
 
-  Future<String> _showAddDialog({String text = ''}) async {
+  Future<String> _showAddDialog({String text = '', String title = 'Add New Task'}) async {
     TextEditingController _controller = TextEditingController(text: text);
     return showDialog<String>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add New Task'),
+          title: Text(title),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -244,6 +254,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () => setState((){
                         _list.toggleCheckedByKey(filterResults[index].key);
                       }),
+                      onLongPress: () => update(index),
                     ),
                   itemCount: filterResults.length,
                 ),
