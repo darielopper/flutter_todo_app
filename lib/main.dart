@@ -140,10 +140,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  get dones => _list.dones();
-
-  get percent => _list.percent();
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
