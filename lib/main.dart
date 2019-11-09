@@ -156,7 +156,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                   ),
                 ),
-              )),
+              ),
+              onTap: () => setState((){
+                _list.toggleChecked(index);
+              }),
+            ),
           itemCount: _list.count,
         ),
       ),
