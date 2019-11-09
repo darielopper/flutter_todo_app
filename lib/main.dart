@@ -76,31 +76,34 @@ class _MyHomePageState extends State<MyHomePage> {
 
   get headerActionIcon => Icon(this._searching ? Icons.search : Icons.clear);
 
-  Future<bool> _confirmDialog({String message = 'Are you sure do you want remove this Task?'}) async {
-      return showDialog<bool>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Delete Task'),
-            content: SingleChildScrollView(
-              child: Text(message)
+  Future<bool> _confirmDialog({
+    String title = 'Delete Task',
+    String message = 'Are you sure do you want remove this Task?'
+  }) async {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: Text(message)
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel'),
+              color: Colors.red,
+              textColor: Colors.white,
+              onPressed: () { Navigator.of(context).pop(false); },
             ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Cancel'),
-                color: Colors.red,
-                textColor: Colors.white,
-                onPressed: () { Navigator.of(context).pop(false); },
-              ),
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () { Navigator.of(context).pop(true); },
-              ),
-            ],
-          );
-        }
-      );
-    }
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: () { Navigator.of(context).pop(true); },
+            ),
+          ],
+        );
+      }
+    );
+  }
 
   Future<String> _showAddDialog() async {
     TextEditingController _controller = TextEditingController();
@@ -158,8 +161,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   removeAll() {
-    _confirmDialog(message: 'Are you sure you want to remove all Tasks?')
-      .then((val) => val ? setState(() { _list.clear(); }) : null);
+    _confirmDialog(
+      title: 'Clear All',
+      message: 'Are you sure you want to remove all Tasks?'
+    ).then((val) => val ? setState(() { _list.clear(); }) : null);
   }
 
   _updateCheckBox(bool value, int index) {
