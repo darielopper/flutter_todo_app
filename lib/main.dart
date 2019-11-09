@@ -1,3 +1,6 @@
+import 'dart:core' as prefix0;
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:todo_example/bolder_markup_text.dart';
 import 'list_data.dart';
@@ -49,14 +52,40 @@ class _MyHomePageState extends State<MyHomePage> {
   ToDoDataList _list = new ToDoDataList();
 
   void addTask() {
-    this._neverSatisfied().then((value) {
+    this._showAddDialog().then((value) {
       setState(() {
         _list.add(new ToDoData(value));
       });
     });
   }
 
-  Future<String> _neverSatisfied() async {
+  Future<bool> _confirmDialog() async {
+      return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Delete Task'),
+            content: SingleChildScrollView(
+              child: Text('Are you sure do you want remove this Task?')
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Cancel'),
+                color: Colors.red,
+                textColor: Colors.white,
+                onPressed: () { Navigator.of(context).pop(false); },
+              ),
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () { Navigator.of(context).pop(true); },
+              ),
+            ],
+          );
+        }
+      );
+    }
+
+  Future<String> _showAddDialog() async {
     TextEditingController _controller = TextEditingController();
     return showDialog<String>(
       context: context,
@@ -89,8 +118,15 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void removeTask(int index) {
-    _list.remove(index);
-    setState(() => {});
+    /*_list.remove(index);
+    setState(() => {});*/
+    _confirmDialog().then((val) {
+      if (val) {
+        setState(() {
+          _list.remove(index);
+        });
+      }
+    });
   }
 
   _updateCheckBox(bool value, int index) {
@@ -137,7 +173,6 @@ class _MyHomePageState extends State<MyHomePage> {
           )),
       body: Container(
         //height: MediaQuery.of(context).size.height * 0.65,
-        //color: Colors.brown,
         child: ListView.builder(
           itemBuilder: (context, index) => ListTile(
               title: Text(_list.items()[index].name()),
