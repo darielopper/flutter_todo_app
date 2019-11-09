@@ -42,6 +42,8 @@ class ToDoDataList {
 
   isChecked(int index) => _list.elementAt(index).checked;
 
+  isCheckedByKey(Key key) => _list.any((item) => item.key.hashCode == key.hashCode && item.checked);
+
   removeAt(int index) => _list.removeAt(index);
 
   remove(Key key) => _list.removeWhere((item) => item.key.hashCode == key.hashCode);

@@ -231,7 +231,7 @@ class _MyHomePageState extends State<MyHomePage> {
           itemBuilder: (context, index) => ListTile(
               title: Text(filterResults[index].name),
               leading: Checkbox(
-                  value: _list.isChecked(index),
+                  value: _list.isCheckedByKey(filterResults[index].key),
                   onChanged: (val) => this._updateCheckBox(val, index)),
               trailing: ClipOval(
                 child: Material(
