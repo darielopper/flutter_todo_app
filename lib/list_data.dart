@@ -1,5 +1,3 @@
-import 'dart:math';
-
 class ToDoData {
   String _name;
   bool _checked;
@@ -18,9 +16,9 @@ class ToDoData {
     return this;
   }
 
-  String name() => this._name;
+  get name => this._name;
 
-  bool checked() => this._checked;
+  get checked => this._checked;
 }
 
 class ToDoDataList {
@@ -36,15 +34,15 @@ class ToDoDataList {
 
   setChecked(int index, bool value) => _list.elementAt(index).setChecked(value);
 
-  isChecked(int index) => _list.elementAt(index).checked();
+  isChecked(int index) => _list.elementAt(index).checked;
 
-  remove(int index) => _list.removeAt(index);
+  removeAt(int index) => _list.removeAt(index);
 
-  toggleChecked(int index) => _list.elementAt(index).setChecked(!_list.elementAt(index).checked());
+  toggleChecked(int index) => _list.elementAt(index).setChecked(!_list.elementAt(index).checked);
 
   clear() => _list.clear();
 
-  get dones => _list.where((item) => item.checked()).length;
+  get dones => _list.where((item) => item.checked).length;
 
   get count => _list.length;
 

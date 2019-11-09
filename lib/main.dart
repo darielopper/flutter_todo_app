@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
   get filterResults {
     return _criteria.length == 0
       ? _list.items()
-      : _list.items().where((item) => item.name().toLowerCase().indexOf(_criteria) >= 0).toList();
+      : _list.items().where((item) => item.name.toLowerCase().indexOf(_criteria) >= 0).toList();
   }
 
   void search(String filter) {
@@ -138,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _confirmDialog().then((val) {
       if (val) {
         setState(() {
-          _list.remove(index);
+          _list.removeAt(index);
         });
       }
     });
@@ -229,7 +229,7 @@ class _MyHomePageState extends State<MyHomePage> {
         //height: MediaQuery.of(context).size.height * 0.65,
         child: ListView.builder(
           itemBuilder: (context, index) => ListTile(
-              title: Text(filterResults[index].name()),
+              title: Text(filterResults[index].name),
               leading: Checkbox(
                   value: _list.isChecked(index),
                   onChanged: (val) => this._updateCheckBox(val, index)),
