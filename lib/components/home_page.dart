@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Methods
   void addTask() {
-    this._showAddDialog().then((value) {
+    Utils.addEditDialog(context: context).then((value) {
       if(value == null) return;
       setState(() {
         _list.add(new ToDoData(value));
@@ -75,9 +75,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void update(int index) {
-    this._showAddDialog(
+    Utils.addEditDialog(
       text: filterResults[index].name,
-      title: 'Edit Task'
+      title: 'Edit Task',
+      context: context
     ).then((value) {
       if (value == null) return;
       setState(() {
@@ -105,39 +106,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       this._criteria = filter;
     });
-  }
-
-  /// Async Method
-  Future<String> _showAddDialog({String text = '', String title = 'Add New Task'}) async {
-    TextEditingController _controller = TextEditingController(text: text);
-    return showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                TextField(
-                  controller: _controller,
-                  decoration: InputDecoration(hintText: 'Description'),
-                  autofocus: true,
-                  onSubmitted: (val) => Navigator.of(context).pop(val),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Ok'),
-              onPressed: () {
-                Navigator.of(context).pop(_controller.text != null ? _controller.text : '');
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   void removeTask(int index) {

@@ -33,4 +33,37 @@ class Utils
       }
     );
   }
+
+  static Future<String> addEditDialog({String text = '', String title = 'Add New Task', BuildContext context}) async {
+    TextEditingController _controller = TextEditingController(text: text);
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(hintText: 'Description'),
+                  autofocus: true,
+                  onSubmitted: (val) => Navigator.of(context).pop(val),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop(_controller.text != null ? _controller.text : '');
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
