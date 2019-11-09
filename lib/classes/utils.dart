@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Utils
@@ -55,10 +56,12 @@ class Utils
           ),
           actions: <Widget>[
             FlatButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            FlatButton(
               child: Text('Ok'),
-              onPressed: () {
-                Navigator.of(context).pop(_controller.text != null ? _controller.text : '');
-              },
+              onPressed: () => Navigator.of(context).pop(_controller.text != null ? _controller.text : '')
             ),
           ],
         );
