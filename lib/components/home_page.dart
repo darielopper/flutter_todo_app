@@ -143,7 +143,12 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         duration: Duration(seconds: 7),
-        action: SnackBarAction(key: Key('close_snackbar'), label: 'Close', onPressed: () => Scaffold.of(context).hideCurrentSnackBar(),),
+        action: SnackBarAction(
+          key: Key('close_snackbar'),
+          label: 'CLOSE',
+          textColor: Colors.white,
+          onPressed: () => Scaffold.of(context).hideCurrentSnackBar(),
+        ),
       ));
 
       return;
