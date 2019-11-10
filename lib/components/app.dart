@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
           primarySwatch: Colors.teal),
-      home: MyHomePage(title: 'Simple ToDo'),
+      home: new Scaffold(body: MyHomePage(title: 'Simple ToDo')),
     );
   }
 }

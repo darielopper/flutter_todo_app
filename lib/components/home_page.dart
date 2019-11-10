@@ -132,6 +132,21 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void removeAll() {
+    if (_list.count == 0) {
+      Scaffold.of(context).showSnackBar(new SnackBar(
+        backgroundColor: Colors.orangeAccent,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Icon(Icons.info_outline),
+            Padding(padding: EdgeInsets.only(left: 10), child: Text('A empty List could not be cleared.', style: TextStyle(fontWeight: FontWeight.bold)))
+          ],
+        ),
+        duration: Duration(seconds: 7),
+      ));
+
+      return;
+    }
     Utils.confirmDialog(
       title: 'Clear All',
       message: 'Are you sure you want to remove all Tasks?',
