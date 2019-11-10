@@ -45,6 +45,11 @@ class ToDoDataList {
 
   setChecked(int index, bool value) => _list.elementAt(index).setChecked(value);
 
+  setCheckedByKey(Key key, bool value) {
+    ToDoData actual = _list.singleWhere((item) => item.key.hashCode == key.hashCode);
+    actual.setChecked(value);
+  }
+
   isChecked(int index) => _list.elementAt(index).checked;
 
   isCheckedByKey(Key key) => _list.any((item) => item.key.hashCode == key.hashCode && item.checked);

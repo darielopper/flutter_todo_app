@@ -141,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _updateCheckBox(bool value, int index) {
     setState(() {
-      _list.setChecked(index, value);
+      _list.setCheckedByKey(filterResults[index].key, value);
     });
   }
 
@@ -155,6 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Visibility(child: Text(widget.title), visible: !_searching),
             Visibility(
               child: TextField(
+                key: Key('search_field'),
                 cursorColor: Colors.white,
                 autofocus: true,
                 autocorrect: false,
@@ -172,8 +173,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         actions: <Widget>[
           IconButton(icon: Icon(sortIcon), onPressed: nextMode),
-          Visibility(child: IconButton(icon: Icon(Icons.search), onPressed: activeSearch, tooltip: 'Search',), visible: !_searching),
-          Visibility(child: IconButton(icon: Icon(Icons.clear), onPressed: deactiveSearch, tooltip: 'Cancel Search',), visible: _searching),
+          Visibility(key: Key('search_btn'), child: IconButton(icon: Icon(Icons.search), onPressed: activeSearch, tooltip: 'Search',), visible: !_searching),
+          Visibility(key: Key('close_btn'), child: IconButton(icon: Icon(Icons.clear), onPressed: deactiveSearch, tooltip: 'Cancel Search',), visible: _searching),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -188,6 +189,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.only(left: 5),
                   child: BolderMarkupText(text: '*Done:* ${_list.dones} of ${_list.count} (*${_list.percent}%*)')),
               IconButton(
+                key: Key('clear_all_btn'),
                 icon: Icon(Icons.clear_all),
                 onPressed: removeAll,
                 tooltip: 'Remove All',

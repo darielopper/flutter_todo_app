@@ -20,12 +20,14 @@ class Utils
           ),
           actions: <Widget>[
             FlatButton(
+              key: Key('cancel_btn'),
               child: Text('Cancel'),
               color: Colors.red,
               textColor: Colors.white,
               onPressed: () { Navigator.of(context).pop(false); },
             ),
             FlatButton(
+              key: Key('confirm_btn'),
               child: Text('Ok'),
               onPressed: () { Navigator.of(context).pop(true); },
             ),
@@ -41,11 +43,12 @@ class Utils
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(title),
+          title: Text(title, key: Key('add_dialog_title')),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 TextField(
+                  key: Key('add_dialog_text_field'),
                   controller: _controller,
                   decoration: InputDecoration(hintText: 'Description'),
                   autofocus: true,
@@ -56,12 +59,20 @@ class Utils
           ),
           actions: <Widget>[
             FlatButton(
+              key: Key('add_dialog_cancel_button'),
               child: Text('Cancel'),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _controller.clear();
+              }
             ),
             FlatButton(
+              key: Key('add_dialog_ok_button'),
               child: Text('Ok'),
-              onPressed: () => Navigator.of(context).pop(_controller.text != null ? _controller.text : '')
+              onPressed: () {
+                Navigator.of(context).pop(_controller.text != null ? _controller.text : '');
+                _controller.clear();
+              }
             ),
           ],
         );
