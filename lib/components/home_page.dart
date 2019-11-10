@@ -139,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Icon(Icons.info_outline),
-            Padding(padding: EdgeInsets.only(left: 10), child: Text('A empty List could not be cleared.', style: TextStyle(fontWeight: FontWeight.bold)))
+            Padding(padding: EdgeInsets.only(left: 5), child: Text('Empty List could not be cleared.', style: TextStyle(fontWeight: FontWeight.bold)))
           ],
         ),
         duration: Duration(seconds: 7),

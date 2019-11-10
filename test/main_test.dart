@@ -30,6 +30,7 @@ void main() {
     find.byKey(Key('add_dialog_input_field'));
     tester.testTextInput.enterText('Dariel');
     await tester.tap(find.byKey(Key('add_dialog_ok_button')));
+    await tester.pump(Duration(seconds: 2));
     expect(find.text('Dariel'), findsOneWidget);
   });
 
@@ -41,7 +42,7 @@ void main() {
     await tester.pump(Duration(seconds: 2));
     // Check that SnackBar is visible
     expect(find.byType(SnackBar), findsOneWidget);
-    expect(find.text('A empty List could not be cleared.'), findsOneWidget);
+    expect(find.text('Empty List could not be cleared.'), findsOneWidget);
   });
 
   testWidgets('Check and Uncheck a Task', (WidgetTester tester) async {
