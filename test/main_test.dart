@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart' as prefix0;
 
 import 'package:todo_example/components/app.dart';
 
@@ -22,6 +23,7 @@ void main() {
     // Build our app and trigger a frame.
     await tester.pumpWidget(app);
     checkEmptyList(tester);
+    // Add a new Task
     await tester.tap(find.byIcon(Icons.add));
     await tester.pump(Duration(seconds: 2));
     expect(find.text('Add New Task'), findsOneWidget);
@@ -29,6 +31,17 @@ void main() {
     tester.testTextInput.enterText('Dariel');
     await tester.tap(find.byKey(Key('add_dialog_ok_button')));
     expect(find.text('Dariel'), findsOneWidget);
+  });
+
+  testWidgets('Clear all for a empty List', (WidgetTester tester) async {
+    await tester.pumpWidget(app);
+    checkEmptyList(tester);
+    // Tap on Clear All button
+    await tester.tap(find.byIcon(Icons.clear_all));
+    await tester.pump(Duration(seconds: 2));
+    // Check that SnackBar is visible
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.text('A empty List could not be cleared.'), findsOneWidget);
   });
 
   testWidgets('Check and Uncheck a Task', (WidgetTester tester) async {
