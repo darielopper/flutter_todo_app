@@ -147,6 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       return;
     }
+
     Utils.confirmDialog(
       title: 'Clear All',
       message: 'Are you sure you want to remove all Tasks?',
