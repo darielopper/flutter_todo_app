@@ -1,16 +1,15 @@
 # todo_example
 
-A new Flutter project.
+A Flutter App to made simple ToDo Lists
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+1. Add/Edit Task
+2. Search Task
+3. Sort Task (ASC, DESC, Entry Time)
+4. Remove Task
+5. Clear all tasks
 
-A few resources to get you started if this is your first Flutter project:
+## Plus
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Include functional tests for Main and BolderMarkupText widget
