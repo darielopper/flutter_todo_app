@@ -12,7 +12,7 @@ void main()
     expect(find.byType(Text), findsOneWidget);
     // Check that text widget created has not style
     expect(tester.widget<Text>(find.byType(Text)).style, null);
-    expect(tester.widget<Text>(find.byType(Text)).data, 'testing a text');
+    expect(tester.widget<Text>(find.byType(Text)).data, 'testing a texts');
   });
 
   testWidgets('create only a Text widget when found 1 bolder sign', (WidgetTester tester) async {
