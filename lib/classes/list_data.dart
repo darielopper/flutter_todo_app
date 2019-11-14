@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 class ToDoData {
   String _name;
@@ -13,6 +14,13 @@ class ToDoData {
     this._createdAt = DateTime.now().millisecondsSinceEpoch;
   }
 
+  ToDoData.fromData({String name, bool checked, int createdAt}) {
+    this._checked = checked;
+    this._key = UniqueKey();
+    this._name = name;
+    this._createdAt = createdAt;
+  }
+
   ToDoData setName(String name) {
     this._name = name;
     return this;
@@ -23,6 +31,14 @@ class ToDoData {
     return this;
   }
 
+  Map<String, dynamic> toJson() => {
+    'name': _name,
+    'checked': _checked,
+    'created_at': _createdAt
+  };
+
+  static ToDoData fromJson(Map<String, dynamic> data) => ToDoData.fromData(name: data['name'], checked: data['checked'] as bool, createdAt: data['created_at'] as int);
+
   get name => this._name;
 
   get checked => this._checked;
@@ -30,6 +46,12 @@ class ToDoData {
   get key => this._key;
 
   get createdAt => this._createdAt;
+
+  set name(String value) => this._name = value;
+  set checked(bool value) => this._checked = value;
+  set createdAt(int value) => this._createdAt = value;
+
+  bool compareTo(ToDoData data) => (data.name == this._name && data.checked == this._checked && data.createdAt == this._createdAt);
 }
 
 class ToDoDataList {
@@ -37,6 +59,10 @@ class ToDoDataList {
 
   ToDoDataList() {
     _list = new List<ToDoData>();
+  }
+
+  ToDoDataList.fromList(List<ToDoData> list) {
+    this._list = list;
   }
 
   add(ToDoData item) => _list.add(item);
@@ -71,6 +97,17 @@ class ToDoDataList {
   }
 
   clear() => _list.clear();
+
+  Map<String, dynamic> toJson() => {
+    'list': json.encode(_list)
+  };
+
+  static ToDoDataList fromJson(Map<String, dynamic> data) {
+    List<ToDoData> list = new List<ToDoData>();
+    Iterable iterable = json.decode(data['list'].length > 0 ? data['list'] : "[]");
+    iterable.forEach((item) => list.add(ToDoData.fromJson(item)));
+    return ToDoDataList.fromList(list);
+  }
 
   get dones => _list.where((item) => item.checked).length;
 
