@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
 class ToDoData {
   String _name;
@@ -31,9 +30,13 @@ class ToDoData {
     return this;
   }
 
-  String toJson() => jsonEncode(this);
+  Map<String, dynamic> toJson() => {
+    'name': _name,
+    'checked': _checked,
+    'created_at': _createdAt
+  };
 
-  ToDoData fromJson(Map<String, dynamic> data) => ToDoData.fromData(name: data['name'], checked: data['checked'] as bool, createdAt: data['createdAt'] as int);
+  ToDoData fromJson(Map<String, dynamic> data) => ToDoData.fromData(name: data['name'], checked: data['checked'] as bool, createdAt: data['created_at'] as int);
 
   get name => this._name;
 
