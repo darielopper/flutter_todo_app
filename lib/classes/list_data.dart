@@ -46,6 +46,12 @@ class ToDoData {
   get key => this._key;
 
   get createdAt => this._createdAt;
+
+  set name(String value) => this._name = value;
+  set checked(bool value) => this._checked = value;
+  set createdAt(int value) => this._createdAt = value;
+
+  bool compareTo(ToDoData data) => (data.name == this._name && data.checked == this._checked && data.createdAt == this._createdAt);
 }
 
 class ToDoDataList {
@@ -53,6 +59,10 @@ class ToDoDataList {
 
   ToDoDataList() {
     _list = new List<ToDoData>();
+  }
+
+  ToDoDataList.fromList(List<ToDoData> list) {
+    this._list = list;
   }
 
   add(ToDoData item) => _list.add(item);
@@ -91,6 +101,13 @@ class ToDoDataList {
   Map<String, dynamic> toJson() => {
     'list': json.encode(_list)
   };
+
+  static ToDoDataList fromJson(Map<String, dynamic> data) {
+    List<ToDoData> list = new List<ToDoData>();
+    Iterable iterable = json.decode(data['list']);
+    iterable.forEach((item) => list.add(ToDoData.fromJson(item)));
+    return ToDoDataList.fromList(list);
+  }
 
   get dones => _list.where((item) => item.checked).length;
 
