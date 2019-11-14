@@ -24,10 +24,11 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   static const SORT_ASCENDING = 'asc';
   static const SORT_DESCENDING = 'desc';
   static const NOT_SORT = 'none';
+  static SharedPreferences preferences;
 
   ToDoDataList _list = new ToDoDataList();
   bool _searching = false;
@@ -279,14 +280,37 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _read() async {
-    final preferences = await SharedPreferences.getInstance();
-    _list = ToDoDataList.fromJson(jsonDecode(preferences.getString('data') ?? '{"list": []}'));
+  _read() {
+    setState(() {
+      _list = ToDoDataList.fromJson(jsonDecode(preferences.getString('data') ?? '{"list": []}'));
+    });
+    // ToDo Add Tooltip to sorting header buttons
+  }
+
+  _save() {
+    preferences.setString('data', jsonEncode(_list));
   }
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
-    _read();
+    SharedPreferences.getInstance().then((pref) {
+      preferences = pref;
+      _read();
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if(AppLifecycleState.paused == state) {
+      _save();
+    }
   }
 }
