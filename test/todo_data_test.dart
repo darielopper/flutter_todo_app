@@ -19,4 +19,12 @@ void main() {
     expect(data.checked, true);
     expect(data.createdAt, createdAt);
   });
+
+  testWidgets('Serialize ToDo Data List correctly', (WidgetTester tester) async {
+    ToDoDataList list = ToDoDataList();
+    list.add(ToDoData.fromData(name: 'Testing', checked: true));
+    list.add(ToDoData.fromData(name: 'Testing123', checked: false));
+    String serialized = jsonEncode(list);
+    expect(serialized, '{"list":"[{\\"name\\":\\"Testing\\",\\"checked\\":true,\\"created_at\\":null},{\\"name\\":\\"Testing123\\",\\"checked\\":false,\\"created_at\\":null}]"}');
+  });
 }
