@@ -104,7 +104,7 @@ class ToDoDataList {
 
   static ToDoDataList fromJson(Map<String, dynamic> data) {
     List<ToDoData> list = new List<ToDoData>();
-    Iterable iterable = json.decode(data['list']);
+    Iterable iterable = json.decode(data['list'].length > 0 ? data['list'] : "[]");
     iterable.forEach((item) => list.add(ToDoData.fromJson(item)));
     return ToDoDataList.fromList(list);
   }

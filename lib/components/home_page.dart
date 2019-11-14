@@ -1,10 +1,10 @@
-//import 'dart:convert';
+import 'dart:convert';
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:todo_example/components/bolder_markup_text.dart';
 import 'package:todo_example/classes/utils.dart';
 import 'package:todo_example/classes/list_data.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -279,9 +279,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  //_read() async {
-    /*final preferences = await SharedPreferences.getInstance();
-    final data = preferences.getString('data');
-    Map<String, dynamic> dataList = jsonDecode(data);*/
-  //}
+  _read() async {
+    final preferences = await SharedPreferences.getInstance();
+    _list = ToDoDataList.fromJson(jsonDecode(preferences.getString('data') ?? '{"list": []}'));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _read();
+  }
 }
