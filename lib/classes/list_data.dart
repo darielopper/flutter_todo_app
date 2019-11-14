@@ -36,7 +36,7 @@ class ToDoData {
     'created_at': _createdAt
   };
 
-  ToDoData fromJson(Map<String, dynamic> data) => ToDoData.fromData(name: data['name'], checked: data['checked'] as bool, createdAt: data['created_at'] as int);
+  static ToDoData fromJson(Map<String, dynamic> data) => ToDoData.fromData(name: data['name'], checked: data['checked'] as bool, createdAt: data['created_at'] as int);
 
   get name => this._name;
 
