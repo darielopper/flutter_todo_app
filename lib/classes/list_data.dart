@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 class ToDoData {
   String _name;
@@ -13,6 +14,13 @@ class ToDoData {
     this._createdAt = DateTime.now().millisecondsSinceEpoch;
   }
 
+  ToDoData.fromData({String name, bool checked, int createdAt}) {
+    this._checked = checked;
+    this._key = UniqueKey();
+    this._name = name;
+    this._createdAt = createdAt;
+  }
+
   ToDoData setName(String name) {
     this._name = name;
     return this;
@@ -22,6 +30,10 @@ class ToDoData {
     this._checked = value;
     return this;
   }
+
+  String toJson() => jsonEncode(this);
+
+  ToDoData fromJson(Map<String, dynamic> data) => ToDoData.fromData(name: data['name'], checked: data['checked'] as bool, createdAt: data['createdAt'] as int);
 
   get name => this._name;
 
