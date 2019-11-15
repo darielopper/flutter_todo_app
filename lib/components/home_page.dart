@@ -226,23 +226,21 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             ],
           )),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Visibility(
-            child: Row(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(top: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Icon(Icons.info, color: Colors.orangeAccent, size: 40),
-                      Text('Sorry, not match found!', style: TextStyle(fontSize: 16),)
-                    ],
-                  )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.info, color: Colors.black38, size: 40),
+                    Text('Sorry, not match found!', style: TextStyle(fontSize: 16))
+                  ],
                 )
-              ]
+              ],
             ),
             visible: notMatchFound
           ),
