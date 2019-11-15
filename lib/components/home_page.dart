@@ -45,6 +45,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   get headerActionIcon => Icon(this._searching ? Icons.search : Icons.clear);
   get notMatchFound => this._criteria.length > 0 && this._searching && filterResults.length == 0;
   get showList => filterResults.length > 0;
+  get sortTooltip {
+    final tooltips = const ['Sort Ascending', 'Sort Descending', 'No Sort List'];
+    return tooltips.elementAt(sortModes.indexOf(sortMode));
+  }
 
   get filterResults {
     List<ToDoData> result = _criteria.length == 0
@@ -197,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           ],
         ),
         actions: <Widget>[
-          IconButton(icon: Icon(sortIcon), onPressed: nextMode),
+          IconButton(icon: Icon(sortIcon), onPressed: nextMode, tooltip: sortTooltip,),
           Visibility(key: Key('search_btn'), child: IconButton(icon: Icon(Icons.search), onPressed: activeSearch, tooltip: 'Search',), visible: !_searching),
           Visibility(key: Key('close_btn'), child: IconButton(icon: Icon(Icons.clear), onPressed: deactiveSearch, tooltip: 'Cancel Search',), visible: _searching),
         ],
