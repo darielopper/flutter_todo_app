@@ -13,10 +13,13 @@ import 'package:todo_example/components/app.dart';
 void checkEmptyList(WidgetTester tester) {
     expect(find.text('Simple ToDo'), findsOneWidget);
     expect(find.text('Dariel'), findsNothing);
+    expect(find.text('The list is empty!'), findsOneWidget);
 }
 
 void main() {
   MyApp app = new MyApp();
+  final String emptyMessage = 'The list is empty!';
+  final String noMatchMessage = 'Sorry, not match found!';
 
   testWidgets('Add a Task to List', (WidgetTester tester) async {
     // Build our app and trigger a frame.
@@ -31,6 +34,7 @@ void main() {
     await tester.tap(find.byKey(Key('add_dialog_ok_button')));
     await tester.pump(Duration(seconds: 2));
     expect(find.text('Dariel'), findsOneWidget);
+    expect(find.text(emptyMessage), findsNothing);
   });
 
   testWidgets('Clear all for a empty List', (WidgetTester tester) async {
@@ -137,7 +141,7 @@ void main() {
     tester.testTextInput.enterText('Algo');
     await tester.pump();
     // Check that message with no data information are visible
-    expect(find.text('Sorry, not match found!'), findsOneWidget);
+    expect(find.text(noMatchMessage), findsOneWidget);
     // And no item are show
     expect(find.byType(ListTile), findsNothing);
     // Filter again for a value that exists
@@ -190,6 +194,7 @@ void main() {
     expect(find.text(' 0 of 0 ('), findsOneWidget);
     // Check that percent data are correct
     expect(find.text('0%'), findsOneWidget);
+    expect(find.text(emptyMessage), findsOneWidget);
   });
 
   testWidgets('Clear All Task', (WidgetTester tester) async {
@@ -207,6 +212,7 @@ void main() {
       await tester.pump(Duration(seconds: 1));
       expect(find.text(name), findsOneWidget);
     }
+    expect(find.text(emptyMessage), findsNothing);
     // Check that two items new are created
     expect(find.byType(ListTile), findsNWidgets(2));
     // Click on Delete All button
@@ -219,6 +225,7 @@ void main() {
     await tester.pump(Duration(seconds: 2));
     // Check that list is empty now
     expect(find.byType(ListTile), findsNothing);
+    expect(find.text(emptyMessage), findsOneWidget);
   });
 
   testWidgets('Sort operation', (WidgetTester tester) async {
@@ -344,6 +351,25 @@ void main() {
         of: find.ancestor(of: find.text('Baby'), matching: find.byType(ListTile)),
         matching: find.byType(Checkbox))
       ).value, true);
+  });
+
+  testWidgets('Show correctly empty message even when filtering', (WidgetTester tester) async {
+    await tester.pumpWidget(app);
+    checkEmptyList(tester);
+    await tester.tap(find.byIcon(Icons.search));
+    await tester.pump();
+    find.byKey(Key('search_field'));
+    tester.testTextInput.enterText('123');
+    await tester.pump();
+    // Check that empty message not show and not match is visible in their place
+    expect(find.text(emptyMessage), findsNothing);
+    expect(find.text(noMatchMessage), findsOneWidget);
+    // Clear search criteria
+    tester.testTextInput.enterText('');
+    // Check that not match message now is hide and empty message is visible
+    await tester.pump();
+    expect(find.text(emptyMessage), findsOneWidget);
+    expect(find.text(noMatchMessage), findsNothing);
   });
 
 }
