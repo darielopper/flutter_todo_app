@@ -244,6 +244,21 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             ),
             visible: notMatchFound
           ),
+          Visibility(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.info, color: Colors.black38, size: 40),
+                    Text('The list is empty!', style: TextStyle(fontSize: 16))
+                  ],
+                )
+              ],
+            ),
+            visible: _list.count == 0 && _criteria.length == 0
+          ),
           Visibility(child: Expanded(
             child: ListView.builder(
                   itemBuilder: (context, index) => ListTile(
