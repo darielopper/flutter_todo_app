@@ -41,7 +41,7 @@ void main() {
     final date2 = DateTime.now().millisecondsSinceEpoch;
     await setupPreference(_key, '{"list":"[{\\"name\\":\\"Dariel\\",\\"checked\\":true,\\"created_at\\":$date1},{\\"name\\":\\"Diana\\",\\"checked\\":false,\\"created_at\\":$date2}]"}', false);
     await tester.pumpWidget(app);
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     // Check that exist the elements loaded from preferences
     expect(find.byType(ListTile), findsNWidgets(2));
     // Check that their text is the loaded correctly

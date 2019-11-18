@@ -27,7 +27,7 @@ void main() {
     checkEmptyList(tester);
     // Add a new Task
     await tester.tap(find.byIcon(Icons.add));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     expect(find.text('Add New Task'), findsOneWidget);
     find.byKey(Key('add_dialog_input_field'));
     tester.testTextInput.enterText('Dariel');
@@ -42,7 +42,7 @@ void main() {
     checkEmptyList(tester);
     // Tap on Clear All button
     await tester.tap(find.byIcon(Icons.clear_all));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     // Check that SnackBar is visible
     expect(find.byType(SnackBar), findsOneWidget);
     expect(find.text('Empty List could not be cleared.'), findsOneWidget);
@@ -52,19 +52,19 @@ void main() {
     await tester.pumpWidget(app);
     // Add new Task
     await tester.tap(find.byIcon(Icons.add));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     expect(find.text('Add New Task'), findsOneWidget);
     find.byKey(Key('add_dialog_input_field'));
     tester.testTextInput.enterText('Dariel');
     await tester.tap(find.byKey(Key('add_dialog_ok_button')));
-    await tester.pump(Duration(seconds: 1));
+    await tester.pumpAndSettle();
     expect(find.text('Dariel'), findsOneWidget);
     expect(find.byType(Checkbox), findsOneWidget);
     // Check that initially checkbox are not checked
     expect(tester.widget<Checkbox>(find.byType(Checkbox)).value, false);
     // Checked the checkbox
     await tester.tap(find.byType(Checkbox));
-    await tester.pump(Duration(seconds: 1));
+    await tester.pumpAndSettle();
     expect(tester.widget<Checkbox>(find.byType(Checkbox)).value, true);
     // Check that percent works correctly
     expect(find.text('100%'), findsOneWidget);
@@ -72,7 +72,7 @@ void main() {
     expect(find.text(' 1 of 1 ('), findsWidgets);
     // Unchecked checkbox
     await tester.tap(find.byType(ListTile));
-    await tester.pump(Duration(seconds: 1));
+    await tester.pumpAndSettle();
     expect(tester.widget<Checkbox>(find.byType(Checkbox)).value, false);
     // Check percent works
     expect(find.text('0%'), findsOneWidget);
@@ -85,34 +85,34 @@ void main() {
     checkEmptyList(tester);
     // Add new Task
     await tester.tap(find.byIcon(Icons.add));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     expect(find.text('Add New Task'), findsOneWidget);
     find.byKey(Key('add_dialog_input_field'));
     tester.testTextInput.enterText('Dariel');
     await tester.tap(find.byKey(Key('add_dialog_ok_button')));
-    await tester.pump(Duration(seconds: 1));
+    await tester.pumpAndSettle();
     expect(find.text('Dariel'), findsOneWidget);
     expect(find.byType(Checkbox), findsOneWidget);
     // Edit it
     await tester.longPress(find.byType(ListTile));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     expect(find.text('Edit Task'), findsOneWidget);
     find.byKey(Key('add_dialog_input_field'));
     tester.testTextInput.enterText('Diana');
     await tester.tap(find.byKey(Key('add_dialog_ok_button')));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     // Check edited value exist on List
     expect(find.text('Diana'), findsOneWidget);
     // Try edit again but not finish operation
     await tester.longPress(find.byType(ListTile));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     // Check that TextField has correct data
     expect(find.text('Diana'), findsNWidgets(2));
     find.byKey(Key('add_dialog_input_field'));
     tester.testTextInput.enterText('Dariel');
     // Cancel edition
     await tester.tap(find.byKey(Key('add_dialog_cancel_button')));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     // Check that old value not changed
     expect(find.text('Dariel'), findsNothing);
     // Check that old value remains
@@ -124,12 +124,12 @@ void main() {
     checkEmptyList(tester);
     // Add new Task
     await tester.tap(find.byIcon(Icons.add));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     expect(find.text('Add New Task'), findsOneWidget);
     find.byKey(Key('add_dialog_input_field'));
     tester.testTextInput.enterText('Dariel');
     await tester.tap(find.byKey(Key('add_dialog_ok_button')));
-    await tester.pump(Duration(seconds: 1));
+    await tester.pumpAndSettle();
     expect(find.text('Dariel'), findsOneWidget);
     expect(find.byType(Checkbox), findsOneWidget);
     // Check search btn are visible
@@ -164,30 +164,30 @@ void main() {
     checkEmptyList(tester);
     // Add new Task
     await tester.tap(find.byIcon(Icons.add));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     expect(find.text('Add New Task'), findsOneWidget);
     find.byKey(Key('add_dialog_input_field'));
     tester.testTextInput.enterText('Dariel');
     await tester.tap(find.byKey(Key('add_dialog_ok_button')));
-    await tester.pump(Duration(seconds: 1));
+    await tester.pumpAndSettle();
     expect(find.text('Dariel'), findsOneWidget);
     expect(find.byType(Checkbox), findsOneWidget);
     // Click on delete button
     await tester.tap(find.byIcon(Icons.delete));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     // Check that confirmation dialog are open
     expect(find.text('Delete Task'), findsOneWidget);
     // Cancel operation
     await tester.tap(find.byKey(Key('cancel_btn')));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     // Check that item still remain on list
     expect(find.byType(ListTile), findsOneWidget);
      // Click on delete button again
     await tester.tap(find.byIcon(Icons.delete));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     // Click on ok button
     await tester.tap(find.byKey(Key('confirm_btn')));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     // Check that list are empty
     expect(find.byType(ListTile), findsNothing);
     // Check that counter are correct
@@ -204,12 +204,12 @@ void main() {
     for (var name in names) {
       // Add new Task
       await tester.tap(find.byIcon(Icons.add));
-      await tester.pump(Duration(seconds: 2));
+      await tester.pumpAndSettle();
       expect(find.text('Add New Task'), findsOneWidget);
       find.byKey(Key('add_dialog_input_field'));
       tester.testTextInput.enterText(name);
       await tester.tap(find.byKey(Key('add_dialog_ok_button')));
-      await tester.pump(Duration(seconds: 1));
+      await tester.pumpAndSettle();
       expect(find.text(name), findsOneWidget);
     }
     expect(find.text(emptyMessage), findsNothing);
@@ -217,12 +217,12 @@ void main() {
     expect(find.byType(ListTile), findsNWidgets(2));
     // Click on Delete All button
     await tester.tap(find.byKey(Key('clear_all_btn')));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     // Check that confirm dialog are open
     expect(find.text('Clear All'), findsOneWidget);
     // Click on ok button
     await tester.tap(find.byKey(Key('confirm_btn')));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pumpAndSettle();
     // Check that list is empty now
     expect(find.byType(ListTile), findsNothing);
     expect(find.text(emptyMessage), findsOneWidget);
@@ -236,12 +236,12 @@ void main() {
     for (var item in items) {
       // Add new Task
       await tester.tap(find.byIcon(Icons.add));
-      await tester.pump(Duration(seconds: 2));
+      await tester.pumpAndSettle();
       expect(find.text('Add New Task'), findsOneWidget);
       find.byKey(Key('add_dialog_input_field'));
       tester.testTextInput.enterText(item);
       await tester.tap(find.byKey(Key('add_dialog_ok_button')));
-      await tester.pump(Duration(seconds: 1));
+      await tester.pumpAndSettle();
       expect(find.text(item), findsOneWidget);
     }
     // Check that all items are created
@@ -283,12 +283,12 @@ void main() {
     for (var name in names) {
       // Add new Task
       await tester.tap(find.byIcon(Icons.add));
-      await tester.pump(Duration(seconds: 2));
+      await tester.pumpAndSettle();
       expect(find.text('Add New Task'), findsOneWidget);
       find.byKey(Key('add_dialog_input_field'));
       tester.testTextInput.enterText(name);
       await tester.tap(find.byKey(Key('add_dialog_ok_button')));
-      await tester.pump(Duration(seconds: 1));
+      await tester.pumpAndSettle();
       expect(find.text(name), findsOneWidget);
     }
     // Check that two items new are created
