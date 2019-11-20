@@ -39,44 +39,55 @@ class Utils
 
   static Future<String> addEditDialog({String text = '', String title = 'Add New Task', BuildContext context}) async {
     TextEditingController _controller = TextEditingController(text: text);
-    return showDialog<String>(
+    return showGeneralDialog<String>(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title, key: Key('add_dialog_title')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                TextField(
-                  key: Key('add_dialog_text_field'),
-                  controller: _controller,
-                  decoration: InputDecoration(hintText: 'Description'),
-                  autofocus: true,
-                  onSubmitted: (val) => Navigator.of(context).pop(val),
+      barrierDismissible: true,
+      barrierLabel: '',
+      barrierColor: Colors.black.withOpacity(0.5),
+      transitionDuration: Duration(milliseconds: 200),
+      transitionBuilder: (context, anim1, anim2, widget) {
+        return Transform.scale(
+          scale: anim1.value,
+          child: Opacity(
+            opacity: anim1.value,
+            child: AlertDialog(
+              title: Text(title, key: Key('add_dialog_title')),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    TextField(
+                      key: Key('add_dialog_text_field'),
+                      controller: _controller,
+                      decoration: InputDecoration(hintText: 'Description'),
+                      autofocus: true,
+                      onSubmitted: (val) => Navigator.of(context).pop(val),
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  key: Key('add_dialog_cancel_button'),
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _controller.clear();
+                  }
+                ),
+                FlatButton(
+                  key: Key('add_dialog_ok_button'),
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop(_controller.text != null ? _controller.text : '');
+                    _controller.clear();
+                  }
                 ),
               ],
-            ),
+            )
           ),
-          actions: <Widget>[
-            FlatButton(
-              key: Key('add_dialog_cancel_button'),
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                _controller.clear();
-              }
-            ),
-            FlatButton(
-              key: Key('add_dialog_ok_button'),
-              child: Text('Ok'),
-              onPressed: () {
-                Navigator.of(context).pop(_controller.text != null ? _controller.text : '');
-                _controller.clear();
-              }
-            ),
-          ],
         );
       },
+      pageBuilder: (context, anim1, anim2) {}
     );
   }
 
