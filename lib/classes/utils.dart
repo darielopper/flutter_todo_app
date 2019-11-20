@@ -10,30 +10,41 @@ class Utils
     String title = 'Delete Task',
     String message = 'Are you sure do you want remove this Task?'
   }) async {
-    return showDialog<bool>(
+    return showGeneralDialog<bool>(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: SingleChildScrollView(
-            child: Text(message)
+      barrierColor: Colors.black.withOpacity(0.5),
+      barrierLabel: '',
+      barrierDismissible: true,
+      transitionDuration: Duration(milliseconds: 200),
+      transitionBuilder: (context, anim1, anim2, widget) {
+        return Transform.scale(
+          scale: anim1.value,
+          child: Opacity(
+            opacity: anim1.value,
+            child: AlertDialog(
+              title: Text(title),
+              content: SingleChildScrollView(
+                child: Text(message)
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  key: Key('cancel_btn'),
+                  child: Text('Cancel'),
+                  color: Colors.red,
+                  textColor: Colors.white,
+                  onPressed: () { Navigator.of(context).pop(false); },
+                ),
+                FlatButton(
+                  key: Key('confirm_btn'),
+                  child: Text('Ok'),
+                  onPressed: () { Navigator.of(context).pop(true); },
+                ),
+              ],
+            ),
           ),
-          actions: <Widget>[
-            FlatButton(
-              key: Key('cancel_btn'),
-              child: Text('Cancel'),
-              color: Colors.red,
-              textColor: Colors.white,
-              onPressed: () { Navigator.of(context).pop(false); },
-            ),
-            FlatButton(
-              key: Key('confirm_btn'),
-              child: Text('Ok'),
-              onPressed: () { Navigator.of(context).pop(true); },
-            ),
-          ],
         );
-      }
+      },
+      pageBuilder: (contex, anim1, anim2) { }
     );
   }
 
