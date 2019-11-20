@@ -44,7 +44,7 @@ class Utils
           ),
         );
       },
-      pageBuilder: (contex, anim1, anim2) { }
+      pageBuilder: (contex, anim1, anim2) => Container()
     );
   }
 
@@ -98,7 +98,7 @@ class Utils
           ),
         );
       },
-      pageBuilder: (context, anim1, anim2) {}
+      pageBuilder: (context, anim1, anim2) => Container()
     );
   }
 
